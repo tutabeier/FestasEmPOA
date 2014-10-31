@@ -14,12 +14,12 @@ class Cdl
     parties = page.css('#conteudo-home > div')
 
     parties.each do |festa|
-        fiesta = Party.new
-        fiesta.name = festa.css('h1').text
-        fiesta.link = URL_PADRAO + festa.css('a').attribute('href').value
-        fiesta.image = URL_PADRAO + festa.css('img').attribute('src').text.strip
+      fiesta = Party.new
+      fiesta.name = festa.css('h1').text
+      fiesta.link = URL_PADRAO + festa.css('a').attribute('href').value
+      fiesta.image = URL_PADRAO + festa.css('img').attribute('src').text.strip
 
-        fiestas.push(fiesta)
+      fiestas.push(fiesta)
     end
 
     fiestas
