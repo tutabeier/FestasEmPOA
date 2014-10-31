@@ -17,9 +17,8 @@ class Beco
       fiesta = Party.new
       fiesta.name = festa.at_css('.baseEventoAgenda').text.strip
       fiesta.link = URL_PADRAO + festa.attributes['href'].value.strip
-      #fiesta.image = URL_PADRAO + festa.at_css('.baseAgendaHome').css('img').attribute('src').text.strip
-      fiesta.image = nil
-      
+      fiesta.image = URL_PADRAO + festa.at_css('.baseAgendaHome').css('img').attribute('src').text.strip      
+
       fiestas.push(fiesta)
     end
 
