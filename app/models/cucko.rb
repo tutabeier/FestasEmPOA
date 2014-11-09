@@ -4,7 +4,12 @@ require 'nokogiri'
 
 class Cucko
 
-  Party = Struct.new(:name, :link, :image)
+  Party = Struct.new(
+                      :name,
+                      :date,
+                      :hour,
+                      :link,
+                      :image)
   URL_PADRAO = 'http://www.cucko.com.br/'
 
   def getParties
@@ -16,6 +21,8 @@ class Cucko
     parties.each do |festa|
       fiesta = Party.new
       fiesta.name = nil
+      fiesta.date = nil
+      fiesta.hour = nil
       fiesta.link = URL_PADRAO + festa.attributes['href'].value.strip
       fiesta.image = URL_PADRAO + festa.css('img').attribute('src').text.strip
 

@@ -1,8 +1,14 @@
 <% @festas.each do |festa| %>
   <%= image_tag festa.image, :size => "182x258" %>
-  <br/>
-  Nome = <%= festa.name %>
-  <br/>
-  Link = <%= link_to festa.link, festa.link %>
+
+  <p>
+    Nome = <%= festa.name %>
+  </p>
+  <p>
+    Data: <%= festa.date %> - <%= festa.hour %>
+  </p>
+  <p>
+    Link = <%= link_to festa.link, festa.link %>
+  </p>
   <hr/>
 <% end %>

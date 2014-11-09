@@ -4,7 +4,12 @@ require 'nokogiri'
 
 class Cdl
 
-  Party = Struct.new(:name, :link, :image)
+  Party = Struct.new(
+                      :name,
+                      :date,
+                      :hour,
+                      :link,
+                      :image)
   URL_PADRAO = 'https://dl.dropboxusercontent.com/u/35181572/meu_site/'
 
   def getParties
@@ -16,6 +21,8 @@ class Cdl
     parties.each do |festa|
       fiesta = Party.new
       fiesta.name = festa.css('h1').text
+      fiesta.date = nil
+      fiesta.hour = nil
       fiesta.link = URL_PADRAO + festa.css('a').attribute('href').value
       fiesta.image = URL_PADRAO + festa.css('img').attribute('src').text.strip
 
