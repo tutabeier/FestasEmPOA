@@ -21,23 +21,24 @@ class Cucko
     festas = Array.new
 
     @carousel.each do |festa|
-      festas.push(createFesta(festa))
+      paginaFesta = Nokogiri::HTML(open(getLink(festa)))
+
+      festa = Party.new(getName(paginaFesta),
+                        getDate(festa),
+                        getHour(festa),
+                        getLink(festa),
+                        getImage(festa))
+
+      festas.push(festa)
     end
 
     festas
   end
 
 private
-  def createFesta (festa)
-    Party.new(getName(festa),
-              getDate(festa),
-              getHour(festa),
-              getLink(festa),
-              getImage(festa))
-  end
 
   def getName (festa)
-    nil
+    festa.css('#info-evento').css('h1').text
   end
 
   def getDate (festa)
@@ -49,7 +50,7 @@ private
   end
 
   def getLink (festa)
-    URL_PADRAO + festa.attributes['href'].value.strip
+    URL_PADRAO + festa.attributes['href'].value
   end
 
   def getImage (festa)

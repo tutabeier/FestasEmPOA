@@ -4,15 +4,17 @@
   </p>
 
   <p>
-    Nome = <%= festa.name %>
+    <%= festa.name %>
   </p>
 
+  <% if festa.date %>
   <p>
-    Data: <%= festa.date %> - <%= festa.hour %>
+    <%= festa.date %> - <%= festa.hour %>
   </p>
+  <% end %>
 
   <p>
-    Link = <%= link_to festa.link, festa.link %>
+    <%= link_to "+ info", festa.link %>
   </p>
   <hr/>
 <% end %>
