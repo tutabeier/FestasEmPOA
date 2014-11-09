@@ -12,23 +12,47 @@ class Cucko
                       :image)
   URL_PADRAO = 'http://www.cucko.com.br/'
 
-  def getParties
-    fiestas = Array.new
-
+  def initialize
     page = Nokogiri::HTML(open(URL_PADRAO+"agenda"))
-    parties = page.css('#agenda').css('a')
+    @carousel = page.css('#agenda').css('a')
+  end
 
-    parties.each do |festa|
-      fiesta = Party.new
-      fiesta.name = nil
-      fiesta.date = nil
-      fiesta.hour = nil
-      fiesta.link = URL_PADRAO + festa.attributes['href'].value.strip
-      fiesta.image = URL_PADRAO + festa.css('img').attribute('src').text.strip
+  def getParties
+    festas = Array.new
 
-      fiestas.push(fiesta)
+    @carousel.each do |festa|
+      festas.push(createFesta(festa))
     end
 
-    fiestas
+    festas
+  end
+
+private
+  def createFesta (festa)
+    Party.new(getName(festa),
+              getDate(festa),
+              getHour(festa),
+              getLink(festa),
+              getImage(festa))
+  end
+
+  def getName (festa)
+    nil
+  end
+
+  def getDate (festa)
+    nil
+  end
+
+  def getHour (festa)
+    nil
+  end
+
+  def getLink (festa)
+    URL_PADRAO + festa.attributes['href'].value.strip
+  end
+
+  def getImage (festa)
+    URL_PADRAO + festa.css('img').attribute('src').text.strip
   end
 end

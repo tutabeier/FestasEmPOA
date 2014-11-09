@@ -12,23 +12,57 @@ class Cdl
                       :image)
   URL_PADRAO = 'https://dl.dropboxusercontent.com/u/35181572/meu_site/'
 
-  def getParties
-    fiestas = Array.new
-
+  def initialize
     page = Nokogiri::HTML(open(URL_PADRAO + 'index.html'))
-    parties = page.css('#conteudo-home > div')
+    @carousel = page.css('#conteudo-home > div')
+  end
 
-    parties.each do |festa|
-      fiesta = Party.new
-      fiesta.name = festa.css('h1').text
-      fiesta.date = nil
-      fiesta.hour = nil
-      fiesta.link = URL_PADRAO + festa.css('a').attribute('href').value
-      fiesta.image = URL_PADRAO + festa.css('img').attribute('src').text.strip
+  def getParties
+    festas = Array.new
 
-      fiestas.push(fiesta)
+    @carousel.each do |festa|
+      festas.push(createFesta(festa))
     end
 
-    fiestas
+    festas
+  end
+
+  def getParties
+    festas = Array.new
+
+    @carousel.each do |festa|
+      festas.push(createFesta(festa))
+    end
+
+    festas
+  end
+
+private
+  def createFesta (festa)
+    Party.new(getName(festa),
+              getDate(festa),
+              getHour(festa),
+              getLink(festa),
+              getImage(festa))
+  end
+
+  def getName (festa)
+    festa.css('h1').text
+  end
+
+  def getDate (festa)
+    nil
+  end
+
+  def getHour (festa)
+    nil
+  end
+
+  def getLink (festa)
+    URL_PADRAO + festa.css('a').attribute('href').value
+  end
+
+  def getImage (festa)
+    URL_PADRAO + festa.css('img').attribute('src').text.strip
   end
 end
