@@ -6,16 +6,21 @@ class ApplicationController < ActionController::Base
 
   def beco
     @festas = Beco.new.getParties
-    render "festa"
+    render 'festa'
   end
 
   def cdl
     @festas = Cdl.new.getParties
-    render "festa"
+    render 'festa'
   end
 
   def cucko
     @festas = Cucko.new.getParties
-    render "festa"
+    render 'festa'
+  end
+
+  def silencio
+    @festas = Silencio.new.getParties
+    render 'festa'
   end
 end
