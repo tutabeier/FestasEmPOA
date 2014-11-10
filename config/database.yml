@@ -3,11 +3,15 @@ development:
   database: dev
   pool: 5
   timeout: 5000
+  username: lbeier
+  password: root
 test:
   adapter: postgresql
   database: test
   pool: 5
   timeout: 5000
+  username: lbeier
+  password: root
 
 production:
   adapter: postgresql
