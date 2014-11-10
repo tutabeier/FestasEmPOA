@@ -53,7 +53,11 @@ class Beco
         }
 
         response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
+
+        Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
+        Rails.logger.info params
         Rails.logger.info response
+        Rails.logger.info "-- END LOG NOME NA LISTA --"
       end
     end
   end

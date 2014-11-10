@@ -46,7 +46,11 @@ class Silencio
       }
 
       response = Net::HTTP.post_form(URI.parse('http://www.clubesilencio.com.br/nome_na_lista_data/nomeLista'), params)
+
+      Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
+      Rails.logger.info params
       Rails.logger.info response
+      Rails.logger.info "-- END LOG NOME NA LISTA --"
     end
   end
 

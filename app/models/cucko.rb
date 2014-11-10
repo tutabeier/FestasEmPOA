@@ -52,7 +52,11 @@ class Cucko
       }
 
       response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
+
+      Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
+      Rails.logger.info params
       Rails.logger.info response
+      Rails.logger.info "-- END LOG NOME NA LISTA --"
     end
   end
 
