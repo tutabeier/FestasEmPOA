@@ -29,30 +29,32 @@ class Beco
   end
 
   def setNomeNaLista(request)
-    ids = request['ids']
+    ids = request['ids'].keys
     nome = request['nome']
     email = request['email']
 
     ids.each do |id|
-      params = {
-        'nome' => nome,
-        'email' => email,
-        'nomeAmigo1' => nil,
-        'nomeAmigo2' => nil,
-        'nomeAmigo3' => nil,
-        'nomeAmigo4' => nil,
-        'nomeAmigo5' => nil,
-        'nomeAmigo6' => nil,
-        'nomeAmigo7' => nil,
-        'nomeAmigo8' => nil,
-        'nomeAmigo9' => nil,
-        'nomeAmigo10' => nil,
-        'idAgenda' => id,
-        'grava' => "ENVIAR"
-      }
+      if id != nil
+        params = {
+          'nome' => nome,
+          'email' => email,
+          'nomeAmigo1' => "",
+          'nomeAmigo2' => "",
+          'nomeAmigo3' => "",
+          'nomeAmigo4' => "",
+          'nomeAmigo5' => "",
+          'nomeAmigo6' => "",
+          'nomeAmigo7' => "",
+          'nomeAmigo8' => "",
+          'nomeAmigo9' => "",
+          'nomeAmigo10' => "",
+          'idAgenda' => id,
+          'grava' => "ENVIAR"
+        }
 
-      response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
-      Rails.logger.info response
+        response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
+        Rails.logger.info response
+      end
     end
   end
 

@@ -39,7 +39,8 @@ class Cucko
   end
 
   def setNomeNaLista(request)
-    ids = request['ids']
+    ids = request['ids'].keys
+    puts ids
     nome = request['nome']
     email = request['email']
 

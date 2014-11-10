@@ -23,14 +23,19 @@ class ApplicationController < ActionController::Base
 
   def silencio
     @festas = Silencio.new.getParties
+  @casa = 'silencio'
     render 'festa'
   end
 
   def formBeco
-    Beco.new.setNomeNaLista(request.POST)    
+    Beco.new.setNomeNaLista(request.POST)
   end
 
   def formCucko
     Cucko.new.setNomeNaLista(request.POST)
+  end
+
+  def formSilencio    
+    Silencio.new.setNomeNaLista(request.POST)
   end
 end

@@ -1,20 +1,5 @@
-<% if @casa == 'beco' || @casa == 'cucko' %>
-  <h4>
-    Preencha o formulário para adicionar o nome na lista de todas as festas.
-  </h4>
-  <%= form_tag("/form"+@casa, method: "post") do %>
-    <%= label_tag(:nome, "Nome:") %>
-    <%= text_field_tag(:nome) %>
-
-    <%= label_tag(:email, "Email:") %>
-    <%= text_field_tag(:email) %>
-
-    <% @festas.each do |festa| %>
-      <input type="hidden" name="ids[]" value="<%= festa.id %>" />
-    <% end %>
-
-    <%= submit_tag("Partiu!") %>
-  <% end %>
+<% if ['beco', 'cucko', 'silencio'].include? @casa %>
+  <%= render partial: "form" %>
 <% end %>
 
 <hr/>

@@ -8,7 +8,8 @@ class Silencio
                      :date,
                      :hour,
                      :link,
-                     :image)
+                     :image,
+                     :id)
   URL_PADRAO = 'http://www.clubesilencio.com.br/'
 
   def initialize
@@ -26,13 +27,39 @@ class Silencio
     festas
   end
 
+  def setNomeNaLista(request)
+    ids = request['ids']
+    nome = request['nome']
+    email = request['email']
+
+    ids.each do |id, nomeEvento|
+      params = {
+        'nome' => nome,
+        'email' => email,
+        'nome_amigo[]' => "",
+        'nome_amigo[]' => "",
+        'nome_amigo[]' => "",
+        'nome_amigo[]' => "",
+        'nome_amigo[]' => "",
+        'evento' => nomeEvento,
+        'eventoId' => id
+      }
+
+      puts params
+
+      # response = Net::HTTP.post_form(URI.parse('http://www.clubesilencio.com.br/nome_na_lista_data/nomeLista'), params)
+      # Rails.logger.info response
+    end
+  end
+
 private
   def createFesta (festa)
     Party.new(getName(festa),
               getDate(festa),
               getHour(festa),
               getLink(festa),
-              getImage(festa))
+              getImage(festa),
+              getId(festa))
   end
 
   def getName (festa)
@@ -40,11 +67,9 @@ private
   end
 
   def getDate (festa)
-    # festa.at_css('.baseEventoDataAgenda').text.scan(/\d{2}\/\d{2}\/\d{4}/).first
   end
 
   def getHour (festa)
-    # festa.at_css('.baseEventoDataAgenda').text.scan(/\d{2}:\d{2}/).first
   end
 
   def getLink (festa)
@@ -53,5 +78,9 @@ private
 
   def getImage (festa)
     festa.at_css('.content').css('a').css('img').attribute('src')
+  end
+
+  def getId (festa)
+    festa.at_css('.content').attribute('id')
   end
 end
