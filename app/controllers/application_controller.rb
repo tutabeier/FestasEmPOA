@@ -23,7 +23,12 @@ class ApplicationController < ActionController::Base
 
   def silencio
     @festas = Silencio.new.getParties
-  @casa = 'silencio'
+    @casa = 'silencio'
+    render 'festa'
+  end
+
+  def opiniao
+    @festas = Opiniao.new.getParties
     render 'festa'
   end
 
