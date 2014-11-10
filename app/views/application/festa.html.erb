@@ -4,9 +4,9 @@
 
 <hr/>
 <% @festas.each do |festa| %>
-
+<div class="festa">
   <p>
-    <%= image_tag festa.image, :size => "182x258" %>
+    <%= image_tag festa.image, :size => "182x258", :class => 'image' %>
   </p>
 
   <p>
@@ -14,13 +14,13 @@
   </p>
 
   <% if festa.date %>
-  <p>
-    <%= festa.date %> - <%= festa.hour %>
-  </p>
+    <p>
+      <%= festa.date %> - <%= festa.hour %>
+    </p>
   <% end %>
 
   <p>
     <%= link_to "+ info", festa.link, :target => "_blank" %>
   </p>
-  <hr/>
+</div>
 <% end %>
