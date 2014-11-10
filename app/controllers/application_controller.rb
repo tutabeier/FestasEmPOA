@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def formBeco
-    Beco.new.setNomeNaLista(request.POST)
+    Beco.new.setNomeNaLista(request.POST)    
   end
 
   def formCucko

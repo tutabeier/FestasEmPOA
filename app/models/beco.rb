@@ -51,7 +51,8 @@ class Beco
         'grava' => "ENVIAR"
       }
 
-      Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
+      response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
+      Rails.logger.info response
     end
   end
 
