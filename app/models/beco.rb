@@ -8,7 +8,8 @@ class Beco
                      :date,
                      :hour,
                      :link,
-                     :image)
+                     :image,
+                     :id)
   URL_PADRAO = 'http://www.beco203.com.br/'
 
   def initialize
@@ -27,13 +28,41 @@ class Beco
     festas
   end
 
+  def setNomeNaLista(request)
+    ids = request['ids']
+    nome = request['nome']
+    email = request['email']
+
+    ids.each do |id|
+      params = {
+        'nome' => nome,
+        'email' => email,
+        'nomeAmigo1' => nil,
+        'nomeAmigo2' => nil,
+        'nomeAmigo3' => nil,
+        'nomeAmigo4' => nil,
+        'nomeAmigo5' => nil,
+        'nomeAmigo6' => nil,
+        'nomeAmigo7' => nil,
+        'nomeAmigo8' => nil,
+        'nomeAmigo9' => nil,
+        'nomeAmigo10' => nil,
+        'idAgenda' => id,
+        'grava' => "ENVIAR"
+      }
+
+      Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
+    end
+  end
+
 private
   def createFesta (festa)
     Party.new(getName(festa),
               getDate(festa),
               getHour(festa),
               getLink(festa),
-              getImage(festa))
+              getImage(festa),
+              getId(festa))
   end
 
   def getName (festa)
@@ -54,5 +83,19 @@ private
 
   def getImage (festa)
     URL_PADRAO + festa.at_css('.baseAgendaHome').css('img').attribute('src').text
+  end
+
+  def getId(festa)
+    page = Nokogiri::HTML(open(getLink(festa)))
+
+    unless page.css('.thickbox').css('a').first.nil?
+      url = page.css('.thickbox').css('a').first.attributes['href'].value
+      uri = URI.parse(url)
+      parse = CGI.parse(uri.query)
+
+      id = parse['id'].first
+    end
+
+    id
   end
 end

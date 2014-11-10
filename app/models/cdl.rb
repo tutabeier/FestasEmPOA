@@ -51,11 +51,9 @@ private
   end
 
   def getDate (festa)
-    nil
   end
 
   def getHour (festa)
-    nil
   end
 
   def getLink (festa)

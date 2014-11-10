@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   def beco
     @festas = Beco.new.getParties
+    @casa = 'beco'
     render 'festa'
   end
 
@@ -16,11 +17,20 @@ class ApplicationController < ActionController::Base
 
   def cucko
     @festas = Cucko.new.getParties
+    @casa = 'cucko'
     render 'festa'
   end
 
   def silencio
     @festas = Silencio.new.getParties
     render 'festa'
+  end
+
+  def formBeco
+    Beco.new.setNomeNaLista(request.POST)
+  end
+
+  def formCucko
+    Cucko.new.setNomeNaLista(request.POST)
   end
 end

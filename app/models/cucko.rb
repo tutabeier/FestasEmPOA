@@ -1,15 +1,17 @@
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
+require "uri"
+require "net/http"
 
 class Cucko
 
-  Party = Struct.new(
-                      :name,
-                      :date,
-                      :hour,
-                      :link,
-                      :image)
+  Party = Struct.new(:name,
+                     :date,
+                     :hour,
+                     :link,
+                     :image,
+                     :id)
   URL_PADRAO = 'http://www.cucko.com.br/'
 
   def initialize
@@ -23,30 +25,44 @@ class Cucko
     @carousel.each do |festa|
       paginaFesta = Nokogiri::HTML(open(getLink(festa)))
 
-      festa = Party.new(getName(paginaFesta),
+      festaStruct = Party.new(getName(paginaFesta),
                         getDate(festa),
                         getHour(festa),
                         getLink(festa),
-                        getImage(festa))
+                        getImage(festa),
+                        getId(festa))
 
-      festas.push(festa)
+      festas.push(festaStruct)
     end
 
     festas
   end
 
-private
+  def setNomeNaLista(request)
+    ids = request['ids']
+    nome = request['nome']
+    email = request['email']
 
+    ids.each do |id|
+      params = {
+        'nome[]' => nome,
+        'email' => email,
+        'idEvento' => id
+      }
+
+      Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
+    end
+  end
+
+private
   def getName (festa)
     festa.css('#info-evento').css('h1').text
   end
 
   def getDate (festa)
-    nil
   end
 
   def getHour (festa)
-    nil
   end
 
   def getLink (festa)
@@ -55,5 +71,9 @@ private
 
   def getImage (festa)
     URL_PADRAO + festa.css('img').attribute('src').text.strip
+  end
+
+  def getId (festa)
+    getLink(festa).split('/').last
   end
 end
