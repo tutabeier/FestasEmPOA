@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FestasEmPOA</title>
+  <title>Festas em POA</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -21,13 +21,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Festas em POA</a>
+          <a class="navbar-brand" href="/">Festas em POA</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active">
-              <%= link_to "Home", :controller => :application, :action => :index %>
-            </li>
             <li>
               <%= link_to "Beco", :controller => :application, :action => :beco %>
             </li>
