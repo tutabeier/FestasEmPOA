@@ -4,12 +4,6 @@ require 'nokogiri'
 
 class Silencio
 
-  Party = Struct.new(:name,
-                     :date,
-                     :hour,
-                     :link,
-                     :image,
-                     :id)
   URL_PADRAO = 'http://www.clubesilencio.com.br/'
 
   def initialize
@@ -17,7 +11,7 @@ class Silencio
     @carousel = page.css('#event-list').css('li')
   end
 
-  def getParties
+  def parties
     festas = Array.new
 
     @carousel.each do |festa|
@@ -56,33 +50,22 @@ class Silencio
 
 private
   def createFesta (festa)
-    Party.new(getName(festa),
-              getDate(festa),
-              getHour(festa),
-              getLink(festa),
-              getImage(festa),
-              getId(festa))
+    Party.new(name(festa), nil, nil, link(festa), image(festa), id(festa))
   end
 
-  def getName (festa)
+  def name (festa)
     festa.at_css('.content').css('a').css('img').attribute('alt')
   end
 
-  def getDate (festa)
-  end
-
-  def getHour (festa)
-  end
-
-  def getLink (festa)
+  def link (festa)
     URL_PADRAO
   end
 
-  def getImage (festa)
+  def image (festa)
     festa.at_css('.content').css('a').css('img').attribute('src')
   end
 
-  def getId (festa)
+  def id (festa)
     festa.at_css('.content').attribute('id')
   end
 end

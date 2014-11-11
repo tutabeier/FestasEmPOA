@@ -2,14 +2,8 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Cdl
+class Cdl < Party
 
-  Party = Struct.new(
-                      :name,
-                      :date,
-                      :hour,
-                      :link,
-                      :image)
   URL_PADRAO = 'https://dl.dropboxusercontent.com/u/35181572/meu_site/'
 
   def initialize
@@ -17,7 +11,7 @@ class Cdl
     @carousel = page.css('#conteudo-home > div')
   end
 
-  def getParties
+  def parties
     festas = Array.new
 
     @carousel.each do |festa|
@@ -27,7 +21,7 @@ class Cdl
     festas
   end
 
-  def getParties
+  def Parties
     festas = Array.new
 
     @carousel.each do |festa|
@@ -39,28 +33,18 @@ class Cdl
 
 private
   def createFesta (festa)
-    Party.new(getName(festa),
-              getDate(festa),
-              getHour(festa),
-              getLink(festa),
-              getImage(festa))
+    Party.new(name(festa), nil, nil, link(festa), image(festa), nil)
   end
 
-  def getName (festa)
+  def name (festa)
     festa.css('h1').text
   end
 
-  def getDate (festa)
-  end
-
-  def getHour (festa)
-  end
-
-  def getLink (festa)
+  def link (festa)
     URL_PADRAO + festa.css('a').attribute('href').value
   end
 
-  def getImage (festa)
+  def image (festa)
     URL_PADRAO + festa.css('img').attribute('src').text.strip
   end
 end

@@ -2,14 +2,8 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Beco
+class Beco < Party
 
-  Party = Struct.new(:name,
-                     :date,
-                     :hour,
-                     :link,
-                     :image,
-                     :id)
   URL_PADRAO = 'http://www.beco203.com.br/'
 
   def initialize
@@ -17,7 +11,7 @@ class Beco
     @carousel = page.css('#mycarousel').css('a')
   end
 
-  def getParties
+  def parties
     festas = Array.new
 
     @carousel.each do |festa|
@@ -64,36 +58,31 @@ class Beco
 
 private
   def createFesta (festa)
-    Party.new(getName(festa),
-              getDate(festa),
-              getHour(festa),
-              getLink(festa),
-              getImage(festa),
-              getId(festa))
+    Party.new(name(festa), date(festa), hour(festa), link(festa), image(festa), id(festa))
   end
 
-  def getName (festa)
+  def name (festa)
     festa.at_css('.baseEventoAgenda').text
   end
 
-  def getDate (festa)
+  def date (festa)
     festa.at_css('.baseEventoDataAgenda').text.scan(/\d{2}\/\d{2}\/\d{4}/).first
   end
 
-  def getHour (festa)
+  def hour (festa)
     festa.at_css('.baseEventoDataAgenda').text.scan(/\d{2}:\d{2}/).first
   end
 
-  def getLink (festa)
+  def link (festa)
     URL_PADRAO + festa.attributes['href'].value
   end
 
-  def getImage (festa)
+  def image (festa)
     URL_PADRAO + festa.at_css('.baseAgendaHome').css('img').attribute('src').text
   end
 
-  def getId(festa)
-    page = Nokogiri::HTML(open(getLink(festa)))
+  def id(festa)
+    page = Nokogiri::HTML(open(link(festa)))
 
     unless page.css('.thickbox').css('a').first.nil?
       url = page.css('.thickbox').css('a').first.attributes['href'].value

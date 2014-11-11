@@ -6,12 +6,6 @@ require "net/http"
 
 class Cucko
 
-  Party = Struct.new(:name,
-                     :date,
-                     :hour,
-                     :link,
-                     :image,
-                     :id)
   URL_PADRAO = 'http://www.cucko.com.br/'
 
   def initialize
@@ -19,20 +13,15 @@ class Cucko
     @carousel = page.css('#agenda').css('a')
   end
 
-  def getParties
+  def parties
     festas = Array.new
 
     @carousel.each do |festa|
-      paginaFesta = Nokogiri::HTML(open(getLink(festa)))
+      paginaFesta = Nokogiri::HTML(open(link(festa)))
 
-      festaStruct = Party.new(getName(paginaFesta),
-                        getDate(festa),
-                        getHour(festa),
-                        getLink(festa),
-                        getImage(festa),
-                        getId(festa))
+      party = Party.new(name(paginaFesta), nil, nil, link(festa), image(festa), id(festa))
 
-      festas.push(festaStruct)
+      festas.push(party)
     end
 
     festas
@@ -61,25 +50,19 @@ class Cucko
   end
 
 private
-  def getName (festa)
+  def name (festa)
     festa.css('#info-evento').css('h1').text
   end
 
-  def getDate (festa)
-  end
-
-  def getHour (festa)
-  end
-
-  def getLink (festa)
+  def link (festa)
     URL_PADRAO + festa.attributes['href'].value
   end
 
-  def getImage (festa)
+  def image (festa)
     URL_PADRAO + festa.css('img').attribute('src').text.strip
   end
 
-  def getId (festa)
-    getLink(festa).split('/').last
+  def id (festa)
+    link(festa).split('/').last
   end
 end

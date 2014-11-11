@@ -2,14 +2,8 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Opiniao
+class Opiniao < Party
 
-  Party = Struct.new(:name,
-                     :date,
-                     :hour,
-                     :link,
-                     :image,
-                     :id)
   URL_PADRAO = 'http://www.opiniao.com.br/'
 
   def initialize
@@ -17,7 +11,7 @@ class Opiniao
     @carousel = page.css('.month').css('.clearfix').css('li')
   end
 
-  def getParties
+  def parties
     festas = Array.new
 
     @carousel.each do |festa|
@@ -29,25 +23,20 @@ class Opiniao
 
 private
   def createFesta (festa)
-    Party.new(getName(festa),
-              getDate(festa),
-              getHour(festa),
-              getLink(festa),
-              getImage(festa),
-              getId(festa))
+    Party.new(name(festa), date(festa), hour(festa), link(festa), image(festa), id(festa))
   end
 
-  def getName (festa)
+  def name (festa)
     festa.css('h3').text
   end
 
-  def getDate (festa)
+  def date (festa)
     day = festa.css('.detail-day').text
     month = festa.css('.detail-month').text
     day + " de " + month
   end
 
-  def getHour (festa)
+  def hour (festa)
     hour = festa.css('.hour').text
     minute = festa.css('.minute').text
     time = hour + minute
@@ -58,15 +47,15 @@ private
     time
   end
 
-  def getLink (festa)
+  def link (festa)
     festa.css('a').first.attribute('href').value
   end
 
-  def getImage (festa)
+  def image (festa)
     hashImage = Hash[festa.at_css('img').to_a]
     hashImage['src']
   end
 
-  def getId(festa)
+  def id(festa)
   end
 end
