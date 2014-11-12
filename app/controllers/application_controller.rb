@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def opiniao
-    @festas = Opiniao.new.parties
+    @festas = Opiniao.all
     render 'festa'
   end
 

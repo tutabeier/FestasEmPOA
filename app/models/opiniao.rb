@@ -2,60 +2,60 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Opiniao < Party
+class Opiniao < ActiveRecord::Base
 
   URL_PADRAO = 'http://www.opiniao.com.br/'
 
-  def initialize
-    page = Nokogiri::HTML(open(URL_PADRAO))
-    @carousel = page.css('.month').css('.clearfix').css('li')
-  end
-
   def parties
-    festas = Array.new
+    page = Nokogiri::HTML(open(URL_PADRAO))
+    carousel = page.css('.month').css('.clearfix').css('li')
 
-    @carousel.each do |festa|
-      festas.push(createFesta(festa))
+    carousel.each do |festa|
+      if (getName(festa) != "")
+        createFesta(festa)
+      end
     end
-    festas.delete_if {|element| element.name == "" }
-    festas
   end
 
-private
+  private
   def createFesta (festa)
-    Party.new(name(festa), date(festa), hour(festa), link(festa), image(festa), id(festa))
+    opiniao = Opiniao.new
+    opiniao.name = getName(festa)
+    opiniao.date = getDate(festa)
+    opiniao.hour = getHour(festa)
+    opiniao.link = getLink(festa)
+    opiniao.image = getImage(festa)
+    opiniao.id_festa = nil
+
+    opiniao.save
   end
 
-  def name (festa)
+  def getName (festa)
     festa.css('h3').text
   end
 
-  def date (festa)
+  def getDate (festa)
     day = festa.css('.detail-day').text
     month = festa.css('.detail-month').text
     day + " de " + month
   end
 
-  def hour (festa)
+  def getHour (festa)
     hour = festa.css('.hour').text
     minute = festa.css('.minute').text
     time = hour + minute
     if time != ""
       time.insert(2, ':')
     end
-
     time
   end
 
-  def link (festa)
+  def getLink (festa)
     festa.css('a').first.attribute('href').value
   end
 
-  def image (festa)
+  def getImage (festa)
     hashImage = Hash[festa.at_css('img').to_a]
     hashImage['src']
-  end
-
-  def id(festa)
   end
 end
