@@ -2,23 +2,17 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Silencio
+class Silencio < ActiveRecord::Base
 
   URL_PADRAO = 'http://www.clubesilencio.com.br/'
 
-  def initialize
-    page = Nokogiri::HTML(open(URL_PADRAO))
-    @carousel = page.css('#event-list').css('li')
-  end
-
   def parties
-    festas = Array.new
+    page = Nokogiri::HTML(open(URL_PADRAO))
+    carousel = page.css('#event-list').css('li')
 
-    @carousel.each do |festa|
-      festas.push(createFesta(festa))
+    carousel.each do |festa|
+      createFesta(festa)
     end
-
-    festas
   end
 
   def setNomeNaLista(request)
@@ -50,22 +44,30 @@ class Silencio
 
 private
   def createFesta (festa)
-    Party.new(name(festa), nil, nil, link(festa), image(festa), id(festa))
+    silencio = Silencio.new
+    silencio.name = getName(festa)
+    silencio.date = nil
+    silencio.hour = nil
+    silencio.link = getLink(festa)
+    silencio.image = getImage(festa)
+    silencio.id_festa = getIdFesta(festa)
+
+    silencio.save
   end
 
-  def name (festa)
-    festa.at_css('.content').css('a').css('img').attribute('alt')
+  def getName (festa)
+    festa.at_css('.content').css('a').css('img').attribute('alt').text
   end
 
-  def link (festa)
+  def getLink (festa)
     URL_PADRAO
   end
 
-  def image (festa)
-    festa.at_css('.content').css('a').css('img').attribute('src')
+  def getImage (festa)
+    festa.at_css('.content').css('a').css('img').attribute('src').text
   end
 
-  def id (festa)
+  def getIdFesta(festa)
     festa.at_css('.content').attribute('id')
   end
 end

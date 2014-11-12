@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def silencio
-    @festas = Silencio.new.parties
+    @festas = Silencio.all
     @casa = 'silencio'
     render 'festa'
   end
