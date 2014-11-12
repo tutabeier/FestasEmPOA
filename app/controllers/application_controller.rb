@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def cucko
-    @festas = Cucko.new.parties
+    @festas = Cucko.all
     @casa = 'cucko'
     render 'festa'
   end

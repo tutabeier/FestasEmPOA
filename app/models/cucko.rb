@@ -4,27 +4,27 @@ require 'nokogiri'
 require "uri"
 require "net/http"
 
-class Cucko
+class Cucko < ActiveRecord::Base
 
   URL_PADRAO = 'http://www.cucko.com.br/'
 
-  def initialize
-    page = Nokogiri::HTML(open(URL_PADRAO+"agenda"))
-    @carousel = page.css('#agenda').css('a')
-  end
-
   def parties
-    festas = Array.new
+    page = Nokogiri::HTML(open(URL_PADRAO+"agenda"))
+    carousel = page.css('#agenda').css('a')
 
-    @carousel.each do |festa|
-      paginaFesta = Nokogiri::HTML(open(link(festa)))
+    carousel.each do |festa|
+      paginaFesta = Nokogiri::HTML(open(getLink(festa)))
 
-      party = Party.new(name(paginaFesta), nil, nil, link(festa), image(festa), id(festa))
+      cucko = Cucko.new
+      cucko.name = getName(paginaFesta)
+      cucko.date = nil
+      cucko.hour = nil
+      cucko.link = getLink(festa)
+      cucko.image = getImage(festa)
+      cucko.id_festa = getIdFesta(festa)
 
-      festas.push(party)
+      cucko.save
     end
-
-    festas
   end
 
   def setNomeNaLista(request)
@@ -32,16 +32,13 @@ class Cucko
     puts ids
     nome = request['nome']
     email = request['email']
-
     ids.each do |id|
       params = {
         'nome[]' => nome,
         'email' => email,
         'idEvento' => id
       }
-
       response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
-
       Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
       Rails.logger.info params
       Rails.logger.info response
@@ -50,19 +47,19 @@ class Cucko
   end
 
 private
-  def name (festa)
+  def getName (festa)
     festa.css('#info-evento').css('h1').text
   end
 
-  def link (festa)
+  def getLink (festa)
     URL_PADRAO + festa.attributes['href'].value
   end
 
-  def image (festa)
+  def getImage (festa)
     URL_PADRAO + festa.css('img').attribute('src').text.strip
   end
 
-  def id (festa)
-    link(festa).split('/').last
+  def getIdFesta (festa)
+    getLink(festa).split('/').last
   end
 end
