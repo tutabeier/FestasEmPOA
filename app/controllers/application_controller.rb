@@ -5,13 +5,13 @@ class ApplicationController < ActionController::Base
   end
 
   def beco
-    @festas = Beco.new.parties
+    @festas = Beco.all
     @casa = 'beco'
     render 'festa'
   end
 
   def cdl
-    @festas = Cdl.new.parties
+    @festas = Cdl.all
     render 'festa'
   end
 

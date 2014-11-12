@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe Beco, :type => :model do
+RSpec.describe Cdl, :type => :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

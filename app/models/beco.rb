@@ -2,19 +2,16 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Beco < Party
+class Beco < ActiveRecord::Base
 
   URL_PADRAO = 'http://www.beco203.com.br/'
 
-  def initialize
-    page = Nokogiri::HTML(open(URL_PADRAO+'agenda'))
-    @carousel = page.css('#mycarousel').css('a')
-  end
-
   def parties
+    page = Nokogiri::HTML(open(URL_PADRAO+'agenda'))
+    carousel = page.css('#mycarousel').css('a')
     festas = Array.new
 
-    @carousel.each do |festa|
+    carousel.each do |festa|
       festas.push(createFesta(festa))
     end
 
@@ -58,31 +55,39 @@ class Beco < Party
 
 private
   def createFesta (festa)
-    Party.new(name(festa), date(festa), hour(festa), link(festa), image(festa), id(festa))
+    beco = Beco.new
+    beco.name = getName(festa)
+    beco.date = getDate(festa)
+    beco.hour = getHour(festa)
+    beco.link = getLink(festa)
+    beco.image = getImage(festa)
+    beco.id_festa = getIdFesta(festa)
+
+    beco.save
   end
 
-  def name (festa)
+  def getName (festa)
     festa.at_css('.baseEventoAgenda').text
   end
 
-  def date (festa)
+  def getDate (festa)
     festa.at_css('.baseEventoDataAgenda').text.scan(/\d{2}\/\d{2}\/\d{4}/).first
   end
 
-  def hour (festa)
+  def getHour (festa)
     festa.at_css('.baseEventoDataAgenda').text.scan(/\d{2}:\d{2}/).first
   end
 
-  def link (festa)
+  def getLink (festa)
     URL_PADRAO + festa.attributes['href'].value
   end
 
-  def image (festa)
+  def getImage (festa)
     URL_PADRAO + festa.at_css('.baseAgendaHome').css('img').attribute('src').text
   end
 
-  def id(festa)
-    page = Nokogiri::HTML(open(link(festa)))
+  def getIdFesta(festa)
+    page = Nokogiri::HTML(open(getLink(festa)))
 
     unless page.css('.thickbox').css('a').first.nil?
       url = page.css('.thickbox').css('a').first.attributes['href'].value

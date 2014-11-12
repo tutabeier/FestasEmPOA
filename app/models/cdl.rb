@@ -2,49 +2,43 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 
-class Cdl < Party
+class Cdl < ActiveRecord::Base
 
   URL_PADRAO = 'https://dl.dropboxusercontent.com/u/35181572/meu_site/'
 
-  def initialize
-    page = Nokogiri::HTML(open(URL_PADRAO + 'index.html'))
-    @carousel = page.css('#conteudo-home > div')
-  end
-
   def parties
+    page = Nokogiri::HTML(open(URL_PADRAO + 'index.html'))
+    carousel = page.css('#conteudo-home > div')
     festas = Array.new
 
-    @carousel.each do |festa|
+    carousel.each do |festa|
       festas.push(createFesta(festa))
     end
-
-    festas
-  end
-
-  def Parties
-    festas = Array.new
-
-    @carousel.each do |festa|
-      festas.push(createFesta(festa))
-    end
-
     festas
   end
 
 private
   def createFesta (festa)
-    Party.new(name(festa), nil, nil, link(festa), image(festa), nil)
+    cdl = Cdl.new
+    cdl.name = getName(festa)
+    cdl.date = nil
+    cdl.hour = nil
+    cdl.link = getLink(festa)
+    cdl.image = getImage(festa)
+    cdl.id_festa = nil
+
+    cdl.save
   end
 
-  def name (festa)
+  def getName (festa)
     festa.css('h1').text
   end
 
-  def link (festa)
+  def getLink (festa)
     URL_PADRAO + festa.css('a').attribute('href').value
   end
 
-  def image (festa)
+  def getImage (festa)
     URL_PADRAO + festa.css('img').attribute('src').text.strip
   end
 end
