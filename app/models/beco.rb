@@ -13,10 +13,13 @@ class Beco < ActiveRecord::Base
     carousel.each do |festa|
       createFesta(festa)
     end
+
+    lastTwo = Beco.last(2)
+    Beco.delete(lastTwo)
   end
 
   def setNomeNaLista(request)
-    ids = Beco.pluck(:id_festa)
+    ids = Beco.pluck(:id_festa).offset(2)
     nome = request['nome']
     email = request['email']
 
