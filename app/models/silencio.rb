@@ -16,7 +16,7 @@ class Silencio < ActiveRecord::Base
   end
 
   def setNomeNaLista(request)
-    ids = request['ids']
+    ids = Silencio.pluck(:id_festa)
     nome = request['nome']
     email = request['email']
 

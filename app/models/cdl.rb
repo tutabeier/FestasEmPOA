@@ -9,12 +9,10 @@ class Cdl < ActiveRecord::Base
   def parties
     page = Nokogiri::HTML(open(URL_PADRAO + 'index.html'))
     carousel = page.css('#conteudo-home > div')
-    festas = Array.new
 
     carousel.each do |festa|
-      festas.push(createFesta(festa))
+      createFesta(festa)
     end
-    festas
   end
 
 private

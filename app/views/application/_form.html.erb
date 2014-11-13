@@ -8,11 +8,5 @@
   <%= label_tag(:email, "Email:") %>
   <%= text_field_tag(:email) %>
 
-  <% @festas.each do |festa| %>
-    <% if festa.id != nil %>
-      <input type="hidden" name="ids[<%= festa.id %>]" value="<%= festa.name %>" />
-    <% end %>
-  <% end %>
-
   <%= submit_tag("─=≡Σ((( つ◕ل͜◕)つ") %>
 <% end %>

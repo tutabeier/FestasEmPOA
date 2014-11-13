@@ -9,18 +9,14 @@ class Beco < ActiveRecord::Base
   def parties
     page = Nokogiri::HTML(open(URL_PADRAO+'agenda'))
     carousel = page.css('#mycarousel').css('a')
-    festas = Array.new
 
     carousel.each do |festa|
-      festas.push(createFesta(festa))
+      createFesta(festa)
     end
-
-    festas.pop(2)
-    festas
   end
 
   def setNomeNaLista(request)
-    ids = request['ids'].keys
+    ids = Beco.pluck(:id_festa)
     nome = request['nome']
     email = request['email']
 
@@ -43,7 +39,7 @@ class Beco < ActiveRecord::Base
           'grava' => "ENVIAR"
         }
 
-        response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id), params)
+        response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id.to_s), params)
 
         Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
         Rails.logger.info params

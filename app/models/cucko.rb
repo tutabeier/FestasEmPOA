@@ -28,8 +28,7 @@ class Cucko < ActiveRecord::Base
   end
 
   def setNomeNaLista(request)
-    ids = request['ids'].keys
-    puts ids
+    ids = Cucko.pluck(:id_festa)
     nome = request['nome']
     email = request['email']
     ids.each do |id|
