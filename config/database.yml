@@ -13,7 +13,7 @@ test:
   username: lbeier
   password:
 
-development:
+production:
   adapter: postgresql
   host: localhost
   username: user
