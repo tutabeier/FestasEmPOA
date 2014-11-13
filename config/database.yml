@@ -11,10 +11,10 @@ test:
   pool: 5
   timeout: 5000
   username: lbeier
-  password: 
+  password:
 
-production:
+development:
   adapter: postgresql
-  database: prod
-  pool: 5
-  timeout: 5000
+  host: localhost
+  username: user
+  database: app-dev
