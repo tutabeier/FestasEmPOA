@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   post 'formbeco', to: 'application#formBeco'
   post 'formcucko', to: 'application#formCucko'
   post 'formsilencio', to: 'application#formSilencio'
+  post 'formAll', to: 'application#formAll'
 end

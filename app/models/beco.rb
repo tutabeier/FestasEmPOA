@@ -19,7 +19,7 @@ class Beco < ActiveRecord::Base
   end
 
   def setNomeNaLista(request)
-    ids = Beco.pluck(:id_festa).offset(2)
+    ids = Beco.pluck(:id_festa)
     nome = request['nome']
     email = request['email']
 

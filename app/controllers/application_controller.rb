@@ -46,4 +46,11 @@ class ApplicationController < ActionController::Base
     Silencio.new.setNomeNaLista(request.POST)
     render 'done'
   end
+
+  def formAll
+    Beco.new.setNomeNaLista(request.POST)
+    Cucko.new.setNomeNaLista(request.POST)
+    Silencio.new.setNomeNaLista(request.POST)
+    render 'done'
+  end
 end
