@@ -11,6 +11,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring', '~> 1.1.3',        group: :development
 gem 'nokogiri', '~> 1.6.3.1'
+gem 'whenever', :require => false
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.1.0'
