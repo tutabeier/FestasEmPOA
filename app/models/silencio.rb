@@ -17,32 +17,32 @@ class Silencio < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Silencio.pluck(:id_festa)
-    nome = request['nome']
-    email = request['email']
+    nomes = request['nome'].values
+    emails = request['email'].values
+    lista = Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
 
-    ids.each do |id, nomeEvento|
-      params = {
-        'nome' => nome,
-        'email' => email,
-        'nome_amigo[]' => "",
-        'nome_amigo[]' => "",
-        'nome_amigo[]' => "",
-        'nome_amigo[]' => "",
-        'nome_amigo[]' => "",
-        'evento' => nomeEvento,
-        'eventoId' => id
-      }
+    lista.each do |nome, email|
+      ids.each do |id, nomeEvento|
+        params = {
+          'nome' => nome,
+          'email' => email ,
+          'nome_amigo[]' => "",
+          'nome_amigo[]' => "",
+          'nome_amigo[]' => "",
+          'nome_amigo[]' => "",
+          'nome_amigo[]' => "",
+          'evento' => nomeEvento,
+          'eventoId' => id
+        }
 
-      response = Net::HTTP.post_form(URI.parse('http://www.clubesilencio.com.br/nome_na_lista_data/nomeLista'), params)
+        # response = Net::HTTP.post_form(URI.parse('http://www.clubesilencio.com.br/nome_na_lista_data/nomeLista'), params)
 
-      Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
-      Rails.logger.info params
-      Rails.logger.info response
-      Rails.logger.info "-- END LOG NOME NA LISTA --"
+        Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Clube Silencio."
+      end
     end
   end
 
-private
+  private
   def createFesta (festa)
     silencio = Silencio.new
     silencio.name = getName(festa)

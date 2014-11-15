@@ -1,12 +1,18 @@
 <h4>
   Preencha o formulário para adicionar o nome na lista de todas as festas.
 </h4>
+
 <%= form_tag("/form"+@casa, method: "post") do %>
-  <%= label_tag(:nome, "Nome:") %>
-  <%= text_field_tag(:nome) %>
-
-  <%= label_tag(:email, "Email:") %>
-  <%= text_field_tag(:email) %>
-
-  <%= submit_tag("─=≡Σ((( つ◕ل͜◕)つ") %>
+<div id="formFields">
+  <div class="formFields">
+    <input id="nome[0]" class="formFields" type="text" placeholder="nome" name="nome[0]"></input>
+    <br/>
+    <input id="email[0]" type="text" placeholder="email" name="email[0]"></input>
+  </div>
+</div>
+<br/>
+<p>
+  <input type="button" class="btn btn-m btn-success" id="addField" value="+ amigo"/>
+  <input type="submit" id="Enviar" name="Enviar" value="Enviar" class="btn btn-m btn-primary" />
+</p>
 <% end %>

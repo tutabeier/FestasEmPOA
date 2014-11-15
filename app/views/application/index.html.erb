@@ -1,21 +1,27 @@
 <div class="page-header">
   <h1>Selecione a casa noturna.</h1>
 </div>
-<p class="lead">
-  Cara caramba cara caraô
-</p>
+<blockquote class="blockquote-reverse">
+  <p>
+    Cara caramba, cara caraô... (4x)
+  </p>
+
+  <footer>
+    Chiclete com Banana
+  </footer>
+</blockquote>
 
 <br>
 
-<p>
+<p class="lead">
   <h3>I don't even care...</h3>
 </p>
 <%= form_tag("/formAll", method: "post") do %>
-  <%= label_tag(:nome, "Nome:") %>
-  <%= text_field_tag(:nome) %>
-
-  <%= label_tag(:email, "Email:") %>
-  <%= text_field_tag(:email) %>
-
-  <%= submit_tag("─=≡Σ((( つ◕ل͜◕)つ") %>
+<p>
+  <%= text_field_tag(:nome, nil, placeholder: "nome") %>
+  <%= text_field_tag(:email, nil, placeholder: "email") %>
+</p>
+<p>
+  <%= submit_tag("Enviar", :class => "btn btn-m btn-primary") %>
+</p>
 <% end %>

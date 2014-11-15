@@ -29,23 +29,26 @@ class Cucko < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Cucko.pluck(:id_festa)
-    nome = request['nome']
-    email = request['email']
-    ids.each do |id|
-      params = {
-        'nome[]' => nome,
-        'email' => email,
-        'idEvento' => id
-      }
-      response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
-      Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
-      Rails.logger.info params
-      Rails.logger.info response
-      Rails.logger.info "-- END LOG NOME NA LISTA --"
+    nomes = request['nome'].values
+    emails = request['email'].values
+    lista = Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
+
+    lista.each do |nome, email|
+      ids.each do |id|
+        params = {
+          'nome[]' => nome,
+          'email' => email,
+          'idEvento' => id
+        }
+        
+        # response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
+
+        Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Cucko."
+      end
     end
   end
 
-private
+  private
   def getName (festa)
     festa.css('#info-evento').css('h1').text
   end

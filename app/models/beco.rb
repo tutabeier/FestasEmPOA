@@ -20,39 +20,39 @@ class Beco < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Beco.pluck(:id_festa)
-    nome = request['nome']
-    email = request['email']
+    nomes = request['nome'].values
+    emails = request['email'].values
+    lista = Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
 
-    ids.each do |id|
-      if id != nil
-        params = {
-          'nome' => nome,
-          'email' => email,
-          'nomeAmigo1' => "",
-          'nomeAmigo2' => "",
-          'nomeAmigo3' => "",
-          'nomeAmigo4' => "",
-          'nomeAmigo5' => "",
-          'nomeAmigo6' => "",
-          'nomeAmigo7' => "",
-          'nomeAmigo8' => "",
-          'nomeAmigo9' => "",
-          'nomeAmigo10' => "",
-          'idAgenda' => id,
-          'grava' => "ENVIAR"
-        }
+    lista.each do |nome, email|
+      ids.each do |id|
+        if id != nil
+          params = {
+            'nome' => nome,
+            'email' => email,
+            'nomeAmigo1' => "",
+            'nomeAmigo2' => "",
+            'nomeAmigo3' => "",
+            'nomeAmigo4' => "",
+            'nomeAmigo5' => "",
+            'nomeAmigo6' => "",
+            'nomeAmigo7' => "",
+            'nomeAmigo8' => "",
+            'nomeAmigo9' => "",
+            'nomeAmigo10' => "",
+            'idAgenda' => id,
+            'grava' => "ENVIAR"
+          }
 
-        response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id.to_s), params)
+          # response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id.to_s), params)
 
-        Rails.logger.info "-- BEGIN LOG NOME NA LISTA --"
-        Rails.logger.info params
-        Rails.logger.info response
-        Rails.logger.info "-- END LOG NOME NA LISTA --"
+          Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Beco."
+        end
       end
     end
   end
 
-private
+  private
   def createFesta (festa)
     beco = Beco.new
     beco.name = getName(festa)
