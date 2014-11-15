@@ -20,9 +20,7 @@ class Beco < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Beco.pluck(:id_festa)
-    nomes = request['nome'].values
-    emails = request['email'].values
-    lista = Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
+    lista = cleanHash (request)
 
     lista.each do |nome, email|
       ids.each do |id|
@@ -53,6 +51,12 @@ class Beco < ActiveRecord::Base
   end
 
   private
+  def cleanHash (request)
+    nomes = request['nome'].values
+    emails = request['email'].values
+    Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
+  end
+
   def createFesta (festa)
     beco = Beco.new
     beco.name = getName(festa)

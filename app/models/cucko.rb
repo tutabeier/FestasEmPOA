@@ -29,9 +29,7 @@ class Cucko < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Cucko.pluck(:id_festa)
-    nomes = request['nome'].values
-    emails = request['email'].values
-    lista = Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
+    lista = cleanHash (request)
 
     lista.each do |nome, email|
       ids.each do |id|
@@ -40,7 +38,7 @@ class Cucko < ActiveRecord::Base
           'email' => email,
           'idEvento' => id
         }
-        
+
         # response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
 
         Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Cucko."
@@ -49,6 +47,12 @@ class Cucko < ActiveRecord::Base
   end
 
   private
+  def cleanHash (request)
+    nomes = request['nome'].values
+    emails = request['email'].values
+    Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
+  end
+
   def getName (festa)
     festa.css('#info-evento').css('h1').text
   end
