@@ -13,6 +13,7 @@ gem 'spring', '~> 1.1.3',        group: :development
 gem 'nokogiri', '~> 1.6.3.1'
 gem 'whenever', :require => false
 gem 'rails_12factor'
+gem 'rfc822'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.1.0'

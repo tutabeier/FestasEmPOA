@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
+require 'formhelper'
 
 class Silencio < ActiveRecord::Base
 
@@ -17,7 +18,7 @@ class Silencio < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Silencio.pluck(:id_festa)
-    lista = cleanHash (request)
+    lista = FormHelper.new.cleanHash (request)
 
     lista.each do |nome, email|
       ids.each do |id, nomeEvento|
@@ -41,12 +42,6 @@ class Silencio < ActiveRecord::Base
   end
 
   private
-  def cleanHash (request)
-    nomes = request['nome'].values
-    emails = request['email'].values
-    Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
-  end
-
   def createFesta (festa)
     silencio = Silencio.new
     silencio.name = getName(festa)

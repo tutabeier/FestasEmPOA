@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
+require 'formhelper'
 
 class Beco < ActiveRecord::Base
 
@@ -20,7 +21,7 @@ class Beco < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Beco.pluck(:id_festa)
-    lista = cleanHash (request)
+    lista = FormHelper.new.cleanHash (request)
 
     lista.each do |nome, email|
       ids.each do |id|
@@ -51,12 +52,6 @@ class Beco < ActiveRecord::Base
   end
 
   private
-  def cleanHash (request)
-    nomes = request['nome'].values
-    emails = request['email'].values
-    Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
-  end
-
   def createFesta (festa)
     beco = Beco.new
     beco.name = getName(festa)

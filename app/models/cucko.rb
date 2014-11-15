@@ -3,6 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 require "uri"
 require "net/http"
+require 'formhelper'
 
 class Cucko < ActiveRecord::Base
 
@@ -29,7 +30,7 @@ class Cucko < ActiveRecord::Base
 
   def setNomeNaLista(request)
     ids = Cucko.pluck(:id_festa)
-    lista = cleanHash (request)
+    lista = FormHelper.new.cleanHash (request)
 
     lista.each do |nome, email|
       ids.each do |id|
@@ -47,12 +48,6 @@ class Cucko < ActiveRecord::Base
   end
 
   private
-  def cleanHash (request)
-    nomes = request['nome'].values
-    emails = request['email'].values
-    Hash[nomes.zip emails].delete_if { |nome, email| nome.nil? || email.nil? || nome.empty? || email.empty? }
-  end
-
   def getName (festa)
     festa.css('#info-evento').css('h1').text
   end
