@@ -43,7 +43,7 @@ class Beco < ActiveRecord::Base
             'grava' => "ENVIAR"
           }
 
-          # response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id.to_s), params)
+          response = Net::HTTP.post_form(URI.parse('http://www.beco203.com.br/resources/files/nomeLista.php?id='+id.to_s), params)
 
           Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Beco."
         end

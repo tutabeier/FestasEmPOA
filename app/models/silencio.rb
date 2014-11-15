@@ -34,7 +34,7 @@ class Silencio < ActiveRecord::Base
           'eventoId' => id
         }
 
-        # response = Net::HTTP.post_form(URI.parse('http://www.clubesilencio.com.br/nome_na_lista_data/nomeLista'), params)
+        response = Net::HTTP.post_form(URI.parse('http://www.clubesilencio.com.br/nome_na_lista_data/nomeLista'), params)
 
         Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Clube Silencio."
       end

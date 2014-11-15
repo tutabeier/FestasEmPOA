@@ -40,7 +40,7 @@ class Cucko < ActiveRecord::Base
           'idEvento' => id
         }
 
-        # response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
+        response = Net::HTTP.post_form(URI.parse('http://www.cucko.com.br/nome_lista/gravaNomeLista'), params)
 
         Rails.logger.info "Adicionado nome " + nome + " e email " + email + " na lista do Cucko."
       end
